@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte Registro - {{ evento_nombre }}</title>
+    <style>
+        @page { size: A4 landscape; margin: 0.5in; }
+        body { font-family: Helvetica, Arial, sans-serif; color: #333; }
+        h1 { color: #047857; text-align: center; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f8fafc; color: #047857; }
+        .footer-print { margin-top: 50px; text-align: center; font-size: 10px; color: #999; }
+        .logo-print { text-align: center; margin-bottom: 20px; }
+        .logo-print img { max-width: 150px; }
+    </style>
+</head>
+<body>
+    <div class="logo-print">
+        <img src="{{ request.scheme }}://{{ request.get_host }}/static/img/images.jpg" alt="Logo">
+    </div>
+    <h1>Reporte de Participación Escolar</h1>
+    <div class="subtitle">
+        <strong>Evento:</strong> {{ evento_nombre }} | 
+        <strong>Carrera:</strong> {{ carrera_nombre }} | 
+        <strong>Semestre:</strong> {{ semestre_nombre }}<br>
+        <strong>Ordenamiento:</strong> {{ orden_nombre }} | 
+        <strong>Total de Registros Constatados:</strong> {{ total }}<br>
+        <strong>Fecha de Emisión:</strong> {% now "d \d\e F \d\e Y" %}
+    </div>
+
+    {% if chart_carrera_b64 or chart_semestre_b64 %}
+    <table style="width: 100%; border: none; margin-top: 15px; margin-bottom: 20px;">
+        <tr>
+            {% if chart_carrera_b64 %}
+            <td style="width: 50%; text-align: center; border: none; vertical-align: middle; padding: 0;">
+                <img src="data:image/png;base64,{{ chart_carrera_b64 }}" width="260">
+            </td>
+            {% endif %}
+            {% if chart_semestre_b64 %}
+            <td style="width: 50%; text-align: center; border: none; vertical-align: middle; padding: 0;">
+                <img src="data:image/png;base64,{{ chart_semestre_b64 }}" width="260">
+            </td>
+            {% endif %}
+        </tr>
+    </table>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>No. Control</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
+                <th>Nombre(s)</th>
+                <th>Correo Institucional</th>
+                <th>Semestre</th>
+                <th>Carrera</th>
+                <th>Fecha de Registro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td>{{ r.numero_control }}</td>
+                <td style="font-weight: bold;">{{ r.apellido_paterno }}</td>
+                <td>{{ r.apellido_materno }}</td>
+                <td>{{ r.nombre }}</td>
+                <td>{{ r.correo_institucional }}</td>
+                <td>{{ r.get_semestre_display }}</td>
+                <td>{{ r.carrera.nombre }}</td>
+                <td>{{ r.fecha_registro|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center;">Sin registros correspondientes al filtro aplicado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer-print">
+        Documento generado automáticamente por MathTec Tracker (TecNM)
+    </div>
+</body>
+</html>

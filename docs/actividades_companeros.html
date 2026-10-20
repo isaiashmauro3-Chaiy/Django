@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Actividades del equipo - Sistema de registro TecNM</title>
+<style>
+@page { size: A4; margin: 0.9cm 1.15cm; }
+body { font-family: Helvetica, Arial, sans-serif; color: #172b3a; font-size: 8.9pt; line-height: 1.27; }
+.header { border-bottom: 4px solid #07805d; padding-bottom: 9px; margin-bottom: 12px; }
+.eyebrow { color: #087e61; font-size: 8.5pt; font-weight: bold; text-transform: uppercase; }
+h1 { font-size: 22pt; line-height: 1.1; margin: 4px 0; color: #15324a; }
+.subtitle { color: #4b6272; font-size: 10.5pt; }
+h2 { color: #087e61; font-size: 15pt; margin: 0 0 5px; }
+h3 { font-size: 10pt; color: #15324a; margin: 8px 0 4px; }
+p { margin: 4px 0 7px; }
+.meta, .small { color: #526676; font-size: 8.5pt; }
+table { width: 100%; border-collapse: collapse; margin: 7px 0 9px; }
+th { background: #15324a; color: white; text-align: left; font-size: 7.8pt; padding: 4px; }
+td { border-bottom: 1px solid #d7e0e5; padding: 4px; vertical-align: top; font-size: 8pt; }
+.activity { width: 56%; }
+.evidence { width: 35%; }
+.check { width: 9%; text-align: center; }
+.deliverable { background: #e9f5f0; border-left: 4px solid #07805d; padding: 8px 10px; margin-top: 8px; }
+.warning { background: #fff7e8; border: 1px solid #f1d29b; padding: 7px 9px; margin: 7px 0; }
+.page-break { page-break-before: always; }
+.line { display: inline-block; border-bottom: 1px solid #8696a1; min-width: 175px; height: 14px; }
+.footer { border-top: 1px solid #cbd7dd; margin-top: 9px; padding-top: 5px; color: #667985; font-size: 7.5pt; }
+</style>
+</head>
+<body>
+<section class="header">
+  <div class="eyebrow">Proyecto escolar · TecNM</div>
+  <h1>Plan de trabajo del equipo</h1>
+  <div class="subtitle">Sistema de registro, búsqueda y control de asistencia</div>
+  <p class="meta">Dos compañeros · Dos días completos cada uno · Actividades sin programación</p>
+  <p>Joel: pruebas funcionales &nbsp; · &nbsp; Iván: operación y documentación</p>
+</section>
+<h2>Joel · Pruebas funcionales</h2>
+<p><strong>Responsabilidad:</strong> probar el sistema como alumno y como personal que registra asistencia. Trabajar con datos ficticios, no cambiar código y reportar defectos con pasos reproducibles.</p>
+<h3>Día 1 · Inscripción y validaciones</h3>
+<table>
+  <thead><tr><th class="activity">Actividad e instrucciones</th><th class="evidence">Resultado y evidencia esperada</th><th class="check">Listo</th></tr></thead>
+  <tbody>
+    <tr><td>Abre la inscripción pública en computadora y celular. Recorre todos los campos, selectores y botones. Comprueba que se pueda avanzar sin elementos cortados y que los campos obligatorios estén identificados.</td><td>Ficha con navegador/dispositivo y capturas de cualquier problema de presentación o navegación.</td><td class="check">[ ]</td></tr>
+    <tr><td>Envía una CURP ficticia válida; después prueba una CURP con longitud incorrecta, otra con fecha imposible y otra con el último dígito cambiado. No uses CURP reales.</td><td>La CURP válida permite continuar. Cada inválida muestra un mensaje comprensible y no crea un registro.</td><td class="check">[ ]</td></tr>
+    <tr><td>Intenta registrar dos veces la misma CURP para el mismo evento; luego usa esa CURP en otro evento. Anota qué dato cambiaste entre intentos.</td><td>El duplicado del mismo evento se rechaza. El resultado para otro evento queda documentado por separado, sin asumirlo.</td><td class="check">[ ]</td></tr>
+    <tr><td>Prueba lengua y comunidad vacías y llenas. En discapacidad selecciona “Otra” primero sin escribir una explicación y después proporcionando una.</td><td>Los campos opcionales no bloquean el registro. “Otra” exige especificación y permite continuar al completarla.</td><td class="check">[ ]</td></tr>
+    <tr><td>Inspecciona la lista de semestres y todas las carreras disponibles comparándolas con el catálogo acordado. Busca explícitamente Mecatrónica.</td><td>Aparecen los semestres del 1.º al 12.º y las carreras autorizadas; Mecatrónica no se ofrece en nuevas inscripciones.</td><td class="check">[ ]</td></tr>
+    <tr><td>Intenta enviar el formulario dejando vacío cada campo obligatorio, uno por uno. Después completa todos los campos obligatorios con datos inventados y envía un registro.</td><td>Los envíos incompletos señalan qué falta. El envío completo confirma que se guardó y no duplica la inscripción.</td><td class="check">[ ]</td></tr>
+    <tr><td>Con un registro válido, comprueba que aparezca el botón de WhatsApp y que abra el enlace configurado. Repite con un registro inválido.</td><td>El botón aparece solo después del registro válido. La inscripción inválida no muestra invitación de WhatsApp.</td><td class="check">[ ]</td></tr>
+    <tr><td>Ordena los resultados, identifica pasos que no se entienden y redacta cada fallo con página, datos ficticios, pasos, resultado esperado y resultado observado.</td><td>Matriz del día completa, capturas legibles y lista de defectos reproducibles o constancia de que no se encontraron.</td><td class="check">[ ]</td></tr>
+  </tbody>
+</table>
+<div class="deliverable"><strong>Cierre del día:</strong> matriz de inscripción con al menos 10 escenarios documentados, capturas legibles y defectos reproducibles o constancia de que no se encontraron.</div>
+<div class="footer">Día completo de trabajo · Usar exclusivamente información inventada · No modificar código.</div>
+
+<div class="page-break"></div>
+<section class="header"><div class="eyebrow">Plan de Joel</div><h1>Día 2 · Búsqueda y asistencia</h1><div class="subtitle">Cierre de pruebas y entrega de evidencias</div></section>
+<table>
+  <thead><tr><th class="activity">Actividad e instrucciones</th><th class="evidence">Resultado y evidencia esperada</th><th class="check">Listo</th></tr></thead>
+  <tbody>
+    <tr><td>Busca un alumno por número de control completo y por un fragmento. Repite con un número inexistente y observa el mensaje de resultados vacíos.</td><td>La coincidencia correcta aparece; la búsqueda inexistente no muestra otros alumnos. Registra los términos probados.</td><td class="check">[ ]</td></tr>
+    <tr><td>Busca por nombre completo, solo nombre, apellido y fragmento de CURP. Prueba también una combinación de letras minúsculas y mayúsculas si es posible.</td><td>Las búsquedas encuentran al alumno correcto y no mezclan coincidencias. Anota cualquier diferencia.</td><td class="check">[ ]</td></tr>
+    <tr><td>En registros ficticios distintos, guarda los estados “Asistió”, “No asistió” y “Pendiente”. Actualiza la página y vuelve a buscar cada alumno.</td><td>Cada estado se conserva tras recargar y el filtro por estado devuelve únicamente los registros esperados.</td><td class="check">[ ]</td></tr>
+    <tr><td>Combina una búsqueda con evento, carrera, semestre y asistencia. Cambia de página si hay suficientes datos y luego vuelve al resultado.</td><td>La búsqueda y los filtros permanecen aplicados durante el filtrado y la paginación.</td><td class="check">[ ]</td></tr>
+    <tr><td>Descarga “Todos los registros” y compárala contra el listado visible, considerando los filtros aplicados.</td><td>El archivo incluye asistentes, no asistentes y pendientes que coinciden con los filtros; los conteos cuadran.</td><td class="check">[ ]</td></tr>
+    <tr><td>Descarga “Solo asistieron” y “Solo no asistieron”. Revisa las filas una por una con los estados que guardaste.</td><td>El primer archivo no incluye pendientes ni faltistas; el segundo no incluye asistentes ni pendientes.</td><td class="check">[ ]</td></tr>
+    <tr><td>Abre cada CSV en Excel o Calc. Revisa encabezados, acentos, columnas de CURP/semestre y texto del estado; compara los datos con el dashboard.</td><td>Los caracteres se leen correctamente, las columnas no se mezclan y los conteos coinciden.</td><td class="check">[ ]</td></tr>
+    <tr><td>Repite los casos fallidos después de informar a Isaías. Resume qué funciona, qué falló y qué impacto tendría antes de presentar el recorrido completo.</td><td>Informe final con matriz de al menos 15 escenarios, evidencia y conclusión clara.</td><td class="check">[ ]</td></tr>
+  </tbody>
+</table>
+<div class="deliverable"><strong>Entrega final:</strong> matriz de al menos 15 casos, capturas, incidencias priorizadas y conclusión sobre el flujo de inscripción, búsqueda, asistencia y descarga.</div>
+<div class="warning"><strong>Defecto:</strong> incluir título, página, datos ficticios, pasos, resultado esperado, resultado real y captura. No incluir contraseñas ni datos personales.</div>
+<div class="footer">Día completo de trabajo · No modificar código · Entregar pruebas con datos ficticios.</div>
+
+<div class="page-break"></div>
+<section class="header">
+  <div class="eyebrow">Actividad de Iván</div>
+  <h1>Operación y documentación</h1>
+  <div class="subtitle">Guía para el departamento y revisión de datos exportados</div>
+</section>
+<p><strong>Responsabilidad:</strong> verificar que el personal pueda operar el sistema con claridad y dejar una guía reutilizable. No modificar código; reportar sugerencias con evidencia.</p>
+<h3>Día 1 · Catálogo y guía administrativa</h3>
+<table>
+  <thead><tr><th class="activity">Actividad e instrucciones</th><th class="evidence">Resultado y evidencia esperada</th><th class="check">Listo</th></tr></thead>
+  <tbody>
+    <tr><td>Compara las 11 carreras activas del formulario con la lista acordada: Administración, Contador Público, Gestión Empresarial, Bioquímica, Electromecánica, Electrónica, Sistemas Computacionales, Informática, Desarrollo de Aplicaciones, Civil y Arquitectura.</td><td>Checklist con las 11 opciones, escritura correcta y evidencia de que Mecatrónica no aparece en el registro nuevo.</td><td class="check">[ ]</td></tr>
+    <tr><td>Recorre el selector de semestre y confirma que se pueda elegir cada valor desde primero hasta doceavo. Comprueba que el texto seleccionado sea claro.</td><td>Lista cotejada de los 12 semestres y captura del inicio y final de la lista.</td><td class="check">[ ]</td></tr>
+    <tr><td>Abre “Configurar WhatsApp”. Revisa el enlace guardado, sustitúyelo por uno de prueba autorizado y guarda. Prueba también dejarlo vacío si el responsable lo permite.</td><td>El dashboard muestra confirmación y el modal enseña el valor actualizado. No publiques ni compartas una invitación real sin autorización.</td><td class="check">[ ]</td></tr>
+    <tr><td>Documenta cómo crear un evento y cómo cambiar el enlace compartido. Pide a Joel que complete una inscripción ficticia para verificar el resultado.</td><td>Sección de guía con pasos numerados y confirmación de que el enlace global funciona sin importar el evento.</td><td class="check">[ ]</td></tr>
+    <tr><td>Documenta el acceso al dashboard y la búsqueda por número de control, nombre y CURP. Explica cómo limpiar o cambiar la búsqueda.</td><td>Una persona que no conozca el sistema puede localizar un registro ficticio siguiendo solo la guía.</td><td class="check">[ ]</td></tr>
+    <tr><td>Explica la diferencia entre “Pendiente”, “Asistió” y “No asistió”. Escribe los pasos para guardar el estado y corregir un registro marcado por error.</td><td>La guía distingue claramente los tres estados y no confunde pendiente con falta de asistencia.</td><td class="check">[ ]</td></tr>
+    <tr><td>Toma capturas de cada paso con alumnos ficticios. Revisa las imágenes antes de compartirlas y elimina nombres, CURP, correos, claves o invitaciones privadas reales.</td><td>Carpeta de evidencias ordenada por sección, sin información personal ni secretos visibles.</td><td class="check">[ ]</td></tr>
+    <tr><td>Ordena los apartados de la guía, agrega títulos, índice breve y fecha. Pide a otra persona que siga las instrucciones y anota en qué paso se detuvo.</td><td>Guía versión 1 revisada por alguien externo y lista concreta de instrucciones confusas.</td><td class="check">[ ]</td></tr>
+  </tbody>
+</table>
+<div class="deliverable"><strong>Cierre del día:</strong> catálogo cotejado y guía versión 1 con capturas de configuración, búsqueda y registro de asistencia.</div>
+<div class="footer">Día completo de trabajo · Usar únicamente datos ficticios · Proteger enlaces y datos del alumnado.</div>
+
+<div class="page-break"></div>
+<section class="header"><div class="eyebrow">Plan de Iván</div><h1>Día 2 · Exportaciones y entrega</h1><div class="subtitle">Auditoría práctica del CSV y cierre de la guía</div></section>
+<table>
+  <thead><tr><th class="activity">Actividad e instrucciones</th><th class="evidence">Resultado y evidencia esperada</th><th class="check">Listo</th></tr></thead>
+  <tbody>
+    <tr><td>Crea una tabla con al menos seis alumnos ficticios: dos “Asistió”, dos “No asistió” y dos “Pendiente”. Anota por adelantado qué filas debe contener cada opción de exportación.</td><td>Conjunto de prueba inventado y conteos esperados separados para todos, asistentes y no asistentes.</td><td class="check">[ ]</td></tr>
+    <tr><td>Descarga “Todos los registros” aplicando los filtros acordados. Compara cada fila y columna con la tabla de prueba.</td><td>El CSV contiene exactamente los alumnos filtrados y muestra datos, evento, carrera, semestre y estado correctos.</td><td class="check">[ ]</td></tr>
+    <tr><td>Descarga “Solo asistieron” y “Solo no asistieron”. Busca deliberadamente un pendiente y confirma que no se clasifique como ausente.</td><td>Los archivos contienen únicamente su estado correspondiente; los conteos coinciden con la lista esperada.</td><td class="check">[ ]</td></tr>
+    <tr><td>Busca un alumno ficticio y vuelve a exportar cada opción. Cambia evento, carrera o semestre y comprueba que la hoja respete esos filtros.</td><td>La búsqueda y filtros reducen las filas exportadas correctamente; no hay registros de otro evento o alumno.</td><td class="check">[ ]</td></tr>
+    <tr><td>Abre los tres CSV en Excel o Calc. Revisa acentos, nombres de columnas, CURP como texto, números de control y los valores de asistencia.</td><td>Los datos se leen completos, no se recortan identificadores y ninguna columna se desplaza.</td><td class="check">[ ]</td></tr>
+    <tr><td>Coteja cada CSV contra la tabla ficticia original. Registra filas esperadas, filas recibidas y cualquier diferencia; no edites los datos exportados para ocultar un error.</td><td>Informe de conciliación con conteos reproducibles y muestras de cualquier discrepancia.</td><td class="check">[ ]</td></tr>
+    <tr><td>Completa la guía con las tres opciones de exportación, qué significa cada estado, cómo aplicar filtros y cómo cotejar la lista con las firmas del examen.</td><td>Guía final con pasos claros y una captura por flujo, usando datos ficticios.</td><td class="check">[ ]</td></tr>
+    <tr><td>Intercambia la guía con Joel para una revisión independiente. Corrige instrucciones confusas y prepara una explicación oral del flujo para el departamento.</td><td>Paquete de entrega ordenado, checklist, capturas y presentación breve sin datos reales.</td><td class="check">[ ]</td></tr>
+  </tbody>
+</table>
+<div class="deliverable"><strong>Entrega final:</strong> guía de operación de 3–5 páginas, checklist de exportación, capturas y conciliación de conteos esperados contra los tres CSV.</div>
+<div class="warning"><strong>Privacidad:</strong> las CURP y datos de alumnos son información personal. Las capturas, ejemplos y archivos de evaluación deben usar exclusivamente registros ficticios.</div>
+<p><strong>Fecha de entrega:</strong> <span class="line"></span> &nbsp; <strong>Revisó:</strong> <span class="line"></span></p>
+<div class="footer">Día completo de trabajo · No modificar código ni publicar información personal.</div>
+</body>
+</html>

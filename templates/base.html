@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Registro al Evento Matemático TecNM{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="bg-light-theme">
+    
+    <nav class="navbar navbar-minimalist">
+        <div class="container d-flex justify-content-between align-items-center">
+            
+            <div class="d-flex align-items-center gap-2">
+                <img src="{% static 'img/images.jpg' %}" alt="Tec Tuxtepec Logo" class="logo-icon">
+                <div class="d-flex flex-column">
+                    <span class="nav-brand-text">
+                        <span style="color: #047857;">Tec</span><span style="color: #1e3a8a;">NM</span> Matemáticas
+                    </span>
+                    <span class="nav-subtitle">Instituto Tecnológico de Tuxtepec</span>
+                </div>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-admin">Dashboard</a>
+            {% else %}
+                <a href="/admin/login/?next=/dashboard/" class="btn-admin">Admin</a>
+            {% endif %}
+            
+        </div>
+    </nav>
+
+    <main class="flex-grow-1 d-flex align-items-center py-5 mt-5">
+        <div class="container">
+            {% if messages %}
+                <div class="mt-4 mb-4">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-tec">
+        <p class="footer-text">© 2025 Tecnológico Nacional de México • Instituto Tecnológico de Tuxtepec • Departamento de Ciencias Básicas</p>
+    </footer>
+
+    <script src="{% static 'vendor/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard | Admin TecNM{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6">
+        <h2 class="form-title-clean mb-0 text-start">Dashboard de Eventos</h2>
+        <p class="text-secondary mb-0">Total Registros Filtrados: <span class="fw-bold">{{ total_inscripciones }}</span></p>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <a href="{% url 'exportar_pdf' %}?{{ pdf_query_string }}" target="_blank" class="btn btn-tec btn-sm d-inline-flex align-items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
+              <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+              <path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .471.246c.15.18.232.345.244.524.015.228-.02.463-.1.666-.086.223-.2.435-.34.623-.19.26-.41.488-.635.688-.415.367-.852.684-1.306.945.39.269.832.483 1.303.626.438.134.887.234 1.353.284.152.016.305.022.459.019.213-.004.425-.035.617-.11.134-.052.261-.132.368-.239.117-.118.2-.266.241-.429a.8.8 0 0 0-.015-.436c-.02-.062-.053-.122-.098-.178-.057-.07-.132-.128-.216-.17a.7.7 0 0 0-.256-.073.8.8 0 0 0-.276.035c-.147.042-.294.103-.43.19-.115.074-.216.166-.312.274-.15.17-.26.377-.323.597a1.6 1.6 0 0 0-.03.228c.002.107.026.21.07.306zM5.5 10.999c-.198.05-.36.115-.5.188-.13.069-.214.137-.246.19a.2.2 0 0 0-.014.072v.006a.1.1 0 0 0 .014.041.2.2 0 0 0 .093.078.4.4 0 0 0 .179.033c.121-.005.253-.028.384-.075.14-.05.289-.118.44-.22zM6.91 9.4c-.2.247-.406.495-.615.74-.21.246-.425.49-.646.732a13 13 0 0 1 .494-1.12c.11-.212.227-.428.35-.644.025.068.048.138.07.206.012.036.024.07.037.106a14 14 0 0 0-.29.68zm2.46-.998a12 12 0 0 1 1.258-.291c.142-.022.288-.04.437-.052a.3.3 0 0 0 .15-.027.2.2 0 0 0 .096-.062.2.2 0 0 0 .025-.098.2.2 0 0 0-.035-.11.3.3 0 0 0-.106-.089.4.4 0 0 0-.13-.049c-.046-.01-.093-.016-.14-.017H11a1 1 0 0 0-.316.035c-.179.057-.354.148-.521.26a4 4 0 0 0-.791.73zM8.5 4.542c-.067.133-.122.274-.16.421-.038.148-.059.297-.053.447.006.14.03.265.066.368.035.097.085.168.145.2.062.033.136.046.216.038.077-.008.146-.027.21-.059a.7.7 0 0 0 .185-.125.7.7 0 0 0 .147-.21c.046-.098.072-.213.072-.34 0-.131-.02-.274-.055-.426a1.9 1.9 0 0 0-.17-.457 2 2 0 0 0-.246-.372c-.053-.06-.109-.115-.164-.167a.3.3 0 0 0-.056-.046l-.014-.007a.1.1 0 0 0-.018-.008c-.01-.004-.02-.008-.03-.012-.02-.008-.045-.015-.072-.018a.3.3 0 0 0-.116.012c-.052.016-.098.041-.137.073a.8.8 0 0 0-.166.195z"/>
+            </svg> Exportar a PDF Filtrado
+        </a>
+        <div class="dropdown d-inline-block ms-1">
+            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Exportar hoja de cálculo</button>
+            <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="{% url 'exportar_registros_csv' %}?{% if filtros_query_string %}{{ filtros_query_string }}&{% endif %}tipo=todos">Todos los registros</a>
+                <a class="dropdown-item" href="{% url 'exportar_registros_csv' %}?{% if filtros_query_string %}{{ filtros_query_string }}&{% endif %}tipo=asistieron">Solo asistieron</a>
+                <a class="dropdown-item" href="{% url 'exportar_registros_csv' %}?{% if filtros_query_string %}{{ filtros_query_string }}&{% endif %}tipo=no_asistieron">Solo no asistieron</a>
+            </div>
+        </div>
+        <button type="button" class="btn btn-outline-success btn-sm ms-1" data-bs-toggle="modal" data-bs-target="#whatsappModal">Configurar WhatsApp</button>
+    </div>
+</div>
+
+<!-- Panel de Filtros Avanzados -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="form-card p-3 bg-light">
+            <form method="GET" action="{% url 'dashboard' %}#tabla-registros" class="row g-2 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1 fw-bold">Evento / Categoría</label>
+                    <select name="evento" class="form-select form-select-sm">
+                        <option value="">Todos los eventos</option>
+                        {% for e in eventos %}
+                            <option value="{{ e.id }}" {% if evento_seleccionado == e.id %}selected{% endif %}>{{ e.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Carrera Multi-Select -->
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1 fw-bold">Carreras (Multi-Selección)</label>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary form-select-sm w-100 text-start d-flex justify-content-between align-items-center bg-white" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <span class="text-truncate">
+                                {% if carreras_seleccionadas %}
+                                    {{ carreras_seleccionadas|length }} seleccionadas
+                                {% else %}
+                                    Todas las carreras
+                                {% endif %}
+                            </span>
+                            <small class="ms-1">▼</small>
+                        </button>
+                        <div class="dropdown-menu p-2 shadow-sm w-100" style="max-height: 220px; overflow-y: auto;">
+                            {% for c in carreras_lista %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="carrera" value="{{ c.id }}" id="carrera_{{ c.id }}" {% if c.id in carreras_seleccionadas %}checked{% endif %}>
+                                    <label class="form-check-label small text-wrap cursor-pointer" for="carrera_{{ c.id }}">
+                                        {{ c.nombre }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Semestre Multi-Select -->
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1 fw-bold">Semestres (Multi-Selección)</label>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary form-select-sm w-100 text-start d-flex justify-content-between align-items-center bg-white" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <span>
+                                {% if semestres_seleccionados %}
+                                    {{ semestres_seleccionados|length }} selecc.
+                                {% else %}
+                                    Todos
+                                {% endif %}
+                            </span>
+                            <small class="ms-1">▼</small>
+                        </button>
+                        <div class="dropdown-menu p-2 shadow-sm w-100">
+                            {% for value, label in semestres_choices %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="semestre" value="{{ value }}" id="sem_{{ value }}" {% if value in semestres_seleccionados %}checked{% endif %}>
+                                    <label class="form-check-label small cursor-pointer" for="sem_{{ value }}">{{ label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1 fw-bold">Ordenamiento</label>
+                    <select name="orden" class="form-select form-select-sm">
+                        <option value="recientes" {% if orden_seleccionado == 'recientes' %}selected{% endif %}>Más recientes</option>
+                        <option value="az" {% if orden_seleccionado == 'az' %}selected{% endif %}>Apellido Paterno (A - Z)</option>
+                        <option value="za" {% if orden_seleccionado == 'za' %}selected{% endif %}>Apellido Paterno (Z - A)</option>
+                        <option value="antiguos" {% if orden_seleccionado == 'antiguos' %}selected{% endif %}>Más antiguos</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1 fw-bold">Asistencia</label>
+                    <select name="asistencia" class="form-select form-select-sm">
+                        <option value="" {% if not asistencia_seleccionada %}selected{% endif %}>Todos</option>
+                        {% for value, label in asistencia_choices %}
+                            <option value="{{ value }}" {% if asistencia_seleccionada == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-muted mb-1 fw-bold" for="busqueda-alumno">Buscar alumno para registrar asistencia</label>
+                    <input id="busqueda-alumno" type="search" name="q" class="form-control form-control-sm" value="{{ busqueda }}" placeholder="No. de control, nombre o CURP">
+                </div>
+                <div class="col-md-2 d-flex gap-1">
+                    <button type="submit" class="btn btn-tec btn-sm w-100">Filtrar</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm" title="Limpiar Filtros">✕</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Chart Carrera -->
+    <div class="col-lg-6 mb-4">
+        <div class="form-card h-100 p-4">
+            <h5 class="fw-bold mb-3">Distribución por Carrera</h5>
+            <canvas id="chartCarrera"></canvas>
+        </div>
+    </div>
+    <!-- Chart Semestre -->
+    <div class="col-lg-6 mb-4">
+        <div class="form-card h-100 p-4">
+            <h5 class="fw-bold mb-3">Asistencia por Semestre</h5>
+            <canvas id="chartSemestre"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="form-card p-4">
+            <h5 id="tabla-registros" class="fw-bold mb-3">Aspirantes Registrados</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No. Control</th>
+                            <th>CURP</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Nombre(s)</th>
+                            <th>Correo Institucional</th>
+                            <th>Semestre</th>
+                            <th>Carrera</th>
+                            <th>Evento</th>
+                            <th>Fecha</th>
+                            <th>Asistencia</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registros %}
+                        <tr>
+                            <td class="fw-bold text-secondary">{{ r.numero_control }}</td>
+                            <td>{{ r.curp }}</td>
+                            <td class="fw-bold">{{ r.apellido_paterno }}</td>
+                            <td>{{ r.apellido_materno|default:"-" }}</td>
+                            <td>{{ r.nombre }}</td>
+                            <td><a href="mailto:{{ r.correo_institucional }}" class="text-decoration-none">{{ r.correo_institucional }}</a></td>
+                            <td>{{ r.get_semestre_display }}</td>
+                            <td>{{ r.carrera.nombre }}</td>
+                            <td><span class="badge bg-primary rounded-0">{{ r.evento.nombre }}</span></td>
+                            <td class="text-secondary small">{{ r.fecha_registro|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <form method="post" action="{% url 'actualizar_asistencia' r.id %}" class="d-flex gap-1">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <select name="asistio" class="form-select form-select-sm" aria-label="Asistencia de {{ r.nombre_completo }}">
+                                        <option value="pendiente" {% if r.asistio == None %}selected{% endif %}>Pendiente</option>
+                                        <option value="si" {% if r.asistio == True %}selected{% endif %}>Asistió</option>
+                                        <option value="no" {% if r.asistio == False %}selected{% endif %}>No asistió</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-tec">Guardar</button>
+                                </form>
+                            </td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'eliminar_registro' r.id %}" onsubmit="return confirm('¿Seguro que deseas eliminar a {{ r.nombre_completo }}?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">Borrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="12" class="text-center py-4 text-muted">No hay registros aún para esta selección.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginación -->
+            <div class="mt-3">
+                <nav aria-label="Navegación de registros">
+                    <ul class="pagination pagination-sm justify-content-end mb-0">
+                        {% if registros.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% if filtros_query_string %}{{ filtros_query_string }}&{% endif %}page={{ registros.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Anterior</a></li>
+                        {% endif %}
+                        
+                        <li class="page-item disabled">
+                            <a class="page-link text-dark">Página {{ registros.number }} de {{ registros.paginator.num_pages }}</a>
+                        </li>
+                        
+                        {% if registros.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% if filtros_query_string %}{{ filtros_query_string }}&{% endif %}page={{ registros.next_page_number }}">Siguiente</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link">Siguiente</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= PANEL DE ADMINISTRACIÓN / CONFIGURACIÓN ======================= -->
+<div class="row mt-4">
+    <!-- Gestionar Carreras -->
+    <div class="col-lg-6 mb-4">
+        <div class="form-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0"><span style="color: #047857;">⚙️ Configuración:</span> Catálogo de Carreras</h5>
+                <button type="button" class="btn-admin" data-bs-toggle="modal" data-bs-target="#carreraModal">+ Añadir Nueva</button>
+            </div>
+            
+            <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                <table class="table table-sm align-middle">
+                    <tbody>
+                        {% for c in carreras_lista %}
+                        <tr>
+                            <td class="text-secondary fw-semibold ps-2">{{ c.nombre }}</td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'eliminar_carrera' c.id %}" onsubmit="return confirm('¿Seguro de remover {{ c.nombre }}?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">Borrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gestionar Eventos -->
+    <div class="col-lg-6 mb-4">
+        <div class="form-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold m-0"><span style="color: #047857;">⚙️ Configuración:</span> Catálogo de Eventos</h5>
+                <button type="button" class="btn-admin" data-bs-toggle="modal" data-bs-target="#eventoModal">+ Abrir Nuevo Evento</button>
+            </div>
+            
+            <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                <table class="table table-sm align-middle">
+                    <tbody>
+                        {% for e in eventos %}
+                        <tr>
+                            <td class="text-secondary fw-semibold ps-2">{{ e.nombre }}</td>
+                            <td><span class="badge {% if e.activo %}bg-success{% else %}bg-secondary{% endif %} rounded-0">{% if e.activo %}Activo{% else %}Inactivo{% endif %}</span></td>
+                            <td class="text-muted small">{{ e.fecha|date:"d M Y" }}</td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'eliminar_evento' e.id %}" onsubmit="return confirm('¿Estás SEGURO de eliminar el evento {{ e.nombre }}?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0">Borrar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= PAPELERA DE RECICLAJE (REGISTROS DESACTIVADOS/ELIMINADOS) ======================= -->
+{% if registros_papelera %}
+<div class="row mt-2">
+    <div class="col-12">
+        <div class="form-card p-4 border-warning">
+            <h5 class="fw-bold mb-3 text-warning">🗑️ Papelera de Reciclaje (Registros Eliminados)</h5>
+            <p class="text-secondary small mb-3">Si eliminaste a un alumno por error, puedes restaurarlo de inmediato con el botón verde.</p>
+            <div class="table-responsive">
+                <table class="table table-sm table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No. Control</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Evento</th>
+                            <th>Fecha</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registros_papelera %}
+                        <tr class="table-light text-muted">
+                            <td>{{ r.numero_control }}</td>
+                            <td>{{ r.nombre_completo }}</td>
+                            <td>{{ r.correo_institucional }}</td>
+                            <td>{{ r.evento.nombre }}</td>
+                            <td>{{ r.fecha_registro|date:"d/m/Y H:i" }}</td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'restaurar_registro' r.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-success rounded-0 me-1">Restaurar</button>
+                                </form>
+                                <form method="post" action="{% url 'eliminar_definitivo' r.id %}" class="d-inline" onsubmit="return confirm('¿⚠️ ATENCIÓN: Estás seguro de borrar PERMANENTEMENTE a {{ r.nombre_completo }}? Esta acción NO se puede deshacer.');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-0 border-0">Eliminar Definitivamente</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- ======================= MODALES DE CREACIÓN ======================= -->
+
+<!-- Modal Carrera -->
+<div class="modal fade" id="carreraModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0" style="border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title form-title-clean fs-4">Añadir Carrera al Sistema</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'agregar_carrera' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label text-secondary">Nombre de la Carrera (Ej. Arquitectura)</label>
+                <input type="text" class="form-control bg-light" name="nombre_carrera" required autocomplete="off">
+            </div>
+            <button type="submit" class="btn-tec w-100 mt-2">Guardar Carrera</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eventos -->
+<div class="modal fade" id="eventoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0" style="border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title form-title-clean fs-4">Aperturar Nuevo Evento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'agregar_evento' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label text-secondary">Nombre de la Competencia / Evento</label>
+                <input type="text" class="form-control bg-light" name="nombre_evento" required autocomplete="off">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-secondary">Fecha de Realización</label>
+                <input type="date" class="form-control bg-light" name="fecha_evento" required>
+            </div>
+            <button type="submit" class="btn-tec w-100 mt-2">Abrir Convocatoria</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0" style="border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title form-title-clean fs-4">Enlace compartido de WhatsApp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'configurar_whatsapp' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                                <label class="form-label text-secondary" for="enlace-whatsapp">Enlace de invitación</label>
+                                <input type="url" class="form-control bg-light" id="enlace-whatsapp" name="enlace_whatsapp" value="{{ configuracion_whatsapp.enlace_whatsapp|default:'' }}" placeholder="https://chat.whatsapp.com/...">
+                                <small class="text-muted">Este enlace se mostrará a quienes completen correctamente su registro, sin importar el evento.</small>
+                        </div>
+                        <button type="submit" class="btn-tec w-100 mt-2">Guardar enlace</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'vendor/chart.umd.js' %}"></script>
+<script>
+    const ctxCarrera = document.getElementById('chartCarrera').getContext('2d');
+    new Chart(ctxCarrera, {
+        type: 'doughnut',
+        data: {
+            labels: {{ labels_carrera|safe }},
+            datasets: [{
+                data: {{ data_carrera|safe }},
+                backgroundColor: {{ colores_carrera|safe }}
+            }]
+        },
+        options: { cutout: '60%', plugins: { legend: { position: 'bottom' } } }
+    });
+
+    const ctxSemestre = document.getElementById('chartSemestre').getContext('2d');
+    new Chart(ctxSemestre, {
+        type: 'bar',
+        data: {
+            labels: {{ labels_semestre|safe }},
+            datasets: [{
+                label: 'Estudiantes',
+                data: {{ data_semestre|safe }},
+                backgroundColor: '#1e3a8a',
+            }]
+        }
+    });
+</script>
+{% endblock %}
